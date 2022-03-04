@@ -1,0 +1,20 @@
+PODS:
+  - CPF-CNPJ-Validator (1.0.2)
+  - KeychainSwift (19.0.0)
+
+DEPENDENCIES:
+  - CPF-CNPJ-Validator
+  - KeychainSwift
+
+SPEC REPOS:
+  trunk:
+    - CPF-CNPJ-Validator
+    - KeychainSwift
+
+SPEC CHECKSUMS:
+  CPF-CNPJ-Validator: 0b08069595da2c4b20e964b743bfc0a7334d5347
+  KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
+
+PODFILE CHECKSUM: 3be089e7ad86c2e9d346ea2897f360e25ac4c785
+
+COCOAPODS: 1.11.2

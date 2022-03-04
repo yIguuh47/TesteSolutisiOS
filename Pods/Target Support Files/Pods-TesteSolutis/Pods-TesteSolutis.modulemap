@@ -1,0 +1,6 @@
+framework module Pods_TesteSolutis {
+  umbrella header "Pods-TesteSolutis-umbrella.h"
+
+  export *
+  module * { export * }
+}
