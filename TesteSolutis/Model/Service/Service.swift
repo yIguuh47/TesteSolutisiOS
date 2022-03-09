@@ -43,7 +43,6 @@ class Service {
             }
             if let safeData = data {
                 if let user = self.parseJSONLogin(loginData: safeData) {
-                    //                        extractModel.requestExtract(token: user.token, delegate: <#ExtractManegerDelegate#>)
                     
                     self.delegateLog?.didLogin(user: user)
                 }
@@ -84,7 +83,6 @@ class Service {
             if let safeData = data {
                 if let extractList = self.parseJSONExtract(safeData) {
                     self.onResponseStatement(extractList: extractList)
-                    print(extractList.count)
                 }
             }
         }
@@ -102,7 +100,6 @@ class Service {
                 let valor = i.valor
                 let extract = ExtractModel(data: data, descricao: descricao, valor: valor)
                 extractList.append(extract)
-                print(extractList.count)
             }
             return extractList
         } catch {

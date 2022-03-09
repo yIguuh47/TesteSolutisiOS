@@ -32,16 +32,16 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         
         extractView.delegate = self
         extractView.dataSource = self
-
+        
+        setGradient()
+        
         if let safeUser = user {
             self.nameLbl.text = safeUser.nome
             self.cpfLbl.text = safeUser.cpf
-            self.saldoLbl.text = String(safeUser.saldo)
-        
+            self.saldoLbl.text = String("R$\(safeUser.saldo)")
         }
-        
-        
     }
+    
     
     
     @IBAction func exitButtom(_ sender: UIButton) {
@@ -53,23 +53,24 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         self.extractView.reloadData()
     }
     
-//    func setGradient() {
-//        let gradient = CAGradientLayer()
-//        gradient.frame = view.bounds
-//        gradient.colors = [UIColor.white, UIColor(named: "blueSolutis")]
-//        //gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
-//        bgGradient.layer.addSublayer(gradient)
-//    }
+    func setGradient() {
+        let view = self.bgGradient
+        let gradient = CAGradientLayer()
+        let startColor: UIColor = #colorLiteral(red: 0.6941176471, green: 0.7803921569, blue: 0.8941176471, alpha: 1)
+        let endColor: UIColor = #colorLiteral(red: 0.1958471239, green: 0.4886431694, blue: 0.7751893401, alpha: 1)
+        gradient.frame = self.bgGradient!.bounds
+        gradient.frame = view!.bounds
+        gradient.colors = [startColor.cgColor, endColor.cgColor]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        view!.layer.insertSublayer(gradient, at: 0)
+    }
     
 }
 
 
 // MARK: - TableView
 extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return extractList.count

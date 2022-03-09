@@ -14,3 +14,5 @@ struct ExtractModel: Decodable {
     let valor: Double
     
 }
+
+
