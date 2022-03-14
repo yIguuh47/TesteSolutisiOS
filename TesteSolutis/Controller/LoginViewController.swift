@@ -32,7 +32,6 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
     
     func dismissKeyboardOnTap() {
         self.view.addGestureRecognizer(self.endEditingRecognizer())
-        self.navigationController?.navigationBar.addGestureRecognizer(self.endEditingRecognizer())
     }
     
     private func endEditingRecognizer() -> UIGestureRecognizer {
