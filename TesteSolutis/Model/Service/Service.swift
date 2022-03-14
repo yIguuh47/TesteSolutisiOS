@@ -11,6 +11,7 @@ import UIKit
 // MARK: - Protocols
 protocol LoginManagerDelegate: NSObjectProtocol {
     func didLogin(user: LoginModel)
+    func didErrorLog()
 }
 
 protocol ExtractManegerDelegate: NSObjectProtocol {
@@ -23,8 +24,6 @@ class Service {
     var delegateLog: LoginManagerDelegate?
     var delegateExt: ExtractManegerDelegate?
     
-    let loginURL = "https://api.mobile.test.solutis.xyz/"
-
     // MARK: - Request Login
     func requestLogin(username: String, password: String) {
         
@@ -40,13 +39,32 @@ class Service {
         let tarefa = session.dataTask(with: request) { (data, response, error) in
             if error != nil {
                 print("Error Task\(error)")
+                self.delegateLog?.didErrorLog()
+                return
             }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode >= 299 {
+                self.delegateLog?.didErrorLog()
+                return
+            }
+            
             if let safeData = data {
                 if let user = self.parseJSONLogin(loginData: safeData) {
-                    
                     self.delegateLog?.didLogin(user: user)
+                    return
+                } else {
+                    self.delegateLog?.didErrorLog()
+                    return
                 }
+            } else {
+                self.delegateLog?.didErrorLog()
+                return
             }
+                
         }
         tarefa.resume()
     }
@@ -67,7 +85,7 @@ class Service {
         }
     }
     
-    
+    // MARK: - Request Extract
     func requestExtract(token: String, delegate: ExtractManegerDelegate) {
                 
         var request = URLRequest(url: URL(string: "https://api.mobile.test.solutis.xyz/extrato")!)
@@ -113,6 +131,5 @@ class Service {
             self.delegateExt?.didExtract(extractList: extractList)
         }
     }
-    
     
 }

@@ -6,7 +6,7 @@ target 'TesteSolutis' do
   use_frameworks!
 
   # Pods for TesteSolutis
-  #pod 'SVProgressHUD', '2.2.5'
+  pod 'SVProgressHUD'
   #pod 'KeychainSwift'
   pod 'CPF-CNPJ-Validator'
   

@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import SVProgressHUD
 
+// MARK: - Data Population
 class ExtractViewController: UIViewController, ExtractManegerDelegate{
     
-    let count = 0
+    var extractFormat = Formattation()
     var extractList: [ExtractModel] = []
     var service = Service()
     var user: LoginModel?
@@ -28,29 +30,22 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         
         service.delegateExt = self
         
-        service.requestExtract(token: user!.token, delegate: service.delegateExt as! ExtractManegerDelegate)
-        
         extractView.delegate = self
         extractView.dataSource = self
         
         setGradient()
+        getData()
+        requestExtrac()
         
-        if let safeUser = user {
-            self.nameLbl.text = safeUser.nome
-            self.cpfLbl.text = safeUser.cpf
-            self.saldoLbl.text = String("R$\(safeUser.saldo)")
-        }
     }
     
-    
-    
-    @IBAction func exitButtom(_ sender: UIButton) {
-        self.dismiss(animated: true)
+    // MARK: - Device Orientation
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
-    func didExtract(extractList: [ExtractModel]) {
-        self.extractList = extractList
-        self.extractView.reloadData()
+    override var shouldAutorotate: Bool {
+        return false
     }
     
     func setGradient() {
@@ -65,9 +60,25 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         view!.layer.insertSublayer(gradient, at: 0)
     }
-    
 }
 
+// MARK: - Population User Data
+extension ExtractViewController {
+    func getData(){
+        if let safeUser = user {
+            self.nameLbl.text = safeUser.nome
+            self.cpfLbl.text = "\(extractFormat.formatCpf(cpf: safeUser.cpf))"
+            self.saldoLbl.text = "R$\(extractFormat.formatValue(value: safeUser.saldo))"
+        }
+    }
+}
+
+// MARK: - Service Request Extract
+extension ExtractViewController {
+    func requestExtrac(){
+        service.requestExtract(token: user!.token, delegate: service.delegateExt as! ExtractManegerDelegate)
+    }
+}
 
 // MARK: - TableView
 extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
@@ -84,6 +95,26 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func didExtract(extractList: [ExtractModel]) {
+        self.extractList = extractList
+        self.extractView.reloadData()
+        SVProgressHUD.dismiss()
+    }
     
 }
 
+// MARK: - Navigation
+extension ExtractViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goBack" {
+            let login = segue.destination as! LoginViewController
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func exitButtom(_ sender: UIButton) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "goBack", sender: self)
+        }
+    }
+}

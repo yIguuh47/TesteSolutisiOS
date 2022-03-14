@@ -15,6 +15,8 @@ class CustomCell: UITableViewCell {
     @IBOutlet weak var valueLbl: UILabel!
     @IBOutlet weak var dataLbl: UILabel!
     
+    var extractFormat = Formattation()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -45,14 +47,15 @@ class CustomCell: UITableViewCell {
         if extractD.valor <= 0.0 {
             self.stateLbl.text = "Pagamento"
             self.descriptionLbl.text = extractD.descricao
-            self.dataLbl.text = extractD.data
-            self.valueLbl.text = "R$\(String(extractD.valor))"
+            self.dataLbl.text = extractFormat.formatDate(date: extractD.data)
+            self.valueLbl.text = "R$\(extractFormat.formatValue(value: extractD.valor))"
             self.valueLbl.textColor = #colorLiteral(red: 0.9989479184, green: 0.258279562, blue: 0.2214803398, alpha: 1)
+
         } else {
             self.stateLbl.text = "Recebimento"
             self.descriptionLbl.text = extractD.descricao
-            self.dataLbl.text = extractD.data
-            self.valueLbl.text = "R$\(String(extractD.valor))"
+            self.dataLbl.text = "\(extractFormat.formatDate(date: extractD.data))"
+            self.valueLbl.text = "R$\(extractFormat.formatValue(value: extractD.valor))"
             self.valueLbl.textColor = #colorLiteral(red: 0.1944899857, green: 0.7790219188, blue: 0.3397343755, alpha: 1)
         
         }
