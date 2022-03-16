@@ -36,7 +36,7 @@ class Service {
         
         let session = URLSession(configuration: .default)
         
-        let task = session.dataTask(with: request) { (data, response, error) in
+        let tarefa = session.dataTask(with: request) { (data, response, error) in
             if error != nil {
                 print("Error Task\(error)")
                 self.delegateLog?.didErrorLog()
@@ -66,7 +66,7 @@ class Service {
             }
                 
         }
-        task.resume()
+        tarefa.resume()
     }
     
     func parseJSONLogin(loginData: Data) -> LoginModel? {
