@@ -12,4 +12,5 @@ struct LoginModel: Decodable {
     let cpf: String
     let saldo: Double
     let token: String
+    
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import SVProgressHUD
+import KeychainSwift
 
 class LoginViewController: UIViewController, LoginManagerDelegate {
     
@@ -14,9 +15,11 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
     @IBOutlet weak var userTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var validationLabel: UILabel!
+    @IBOutlet weak var rememberSwitch: UISwitch!
     
     var service = Service()
     var user: LoginModel?
+    var username: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +30,8 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         service.delegateLog = self
         userTextField.delegate = self
         passwordTextField.delegate = self
+        
+        updateLogin()
         
     }
     
@@ -40,16 +45,22 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         tap.cancelsTouchesInView = false
         return tap
     }
-    
-    // MARK: - Device Orientation
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-    
-    override var shouldAutorotate: Bool {
-        return false
-    }
         
+    @IBAction func switchRemembe(_ sender: UISwitch) {
+        remember(sender)
+    }
+    
+    @IBAction func loginPressed(_ sender: UIButton) {
+        self.loginButtom.isUserInteractionEnabled = false
+        
+        guard let user = userTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        SVProgressHUD.show()
+        validInputs(user, password)
+    }
+    
+    
     // MARK: - Delegation
     func didLogin(user: LoginModel) {
         DispatchQueue.main.async {
@@ -63,6 +74,28 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         self.errorLog()
     }
     
+}
+
+extension LoginViewController {
+    func updateLogin(){
+        let keyChain = KeychainSwift()
+        rememberSwitch.isOn = keyChain.getBool("rememberSwitch") ?? false
+        
+        if rememberSwitch.isOn {
+            username = keyChain.get("username")
+            userTextField.text = username
+        }
+    }
+    
+    func remember(_ sender: UISwitch) {
+        let keyChain = KeychainSwift()
+
+        if sender.isOn {
+            keyChain.set(true, forKey: "rememberSwitch")
+        } else {
+            keyChain.set(false, forKey: "rememberSwitch")
+        }
+    }
 }
 
 // MARK: - TextFields
@@ -80,9 +113,9 @@ extension LoginViewController: UITextFieldDelegate {
         if textField == userTextField {
             
             if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
-                nextField.becomeFirstResponder()
+                nextField.resignFirstResponder()
             } else {
-                textField.resignFirstResponder()
+                textField.becomeFirstResponder()
             }
             return false
         } else {
@@ -94,6 +127,7 @@ extension LoginViewController: UITextFieldDelegate {
         }
     }
 }
+
 
 // MARK: - Validation
 extension LoginViewController {
@@ -124,16 +158,6 @@ extension LoginViewController {
 
 // MARK: - Navigation
 extension LoginViewController {
-    @IBAction func loginPressed(_ sender: UIButton) {
-        
-        self.loginButtom.isUserInteractionEnabled = false
-        
-        guard let user = userTextField.text else {return}
-        guard let password = passwordTextField.text else {return}
-        
-        SVProgressHUD.show()
-        validInputs(user, password)
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToAccount" {
@@ -142,5 +166,6 @@ extension LoginViewController {
             self.dismiss(animated: false, completion: nil)
         }
     }
+    
 }
 

@@ -7,7 +7,7 @@ target 'TesteSolutis' do
 
   # Pods for TesteSolutis
   pod 'SVProgressHUD'
-  #pod 'KeychainSwift'
+  pod 'KeychainSwift'
   pod 'CPF-CNPJ-Validator'
   
 end

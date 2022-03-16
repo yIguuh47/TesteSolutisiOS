@@ -1,20 +1,24 @@
 PODS:
   - CPF-CNPJ-Validator (1.0.2)
+  - KeychainSwift (19.0.0)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - CPF-CNPJ-Validator
+  - KeychainSwift
   - SVProgressHUD
 
 SPEC REPOS:
   trunk:
     - CPF-CNPJ-Validator
+    - KeychainSwift
     - SVProgressHUD
 
 SPEC CHECKSUMS:
   CPF-CNPJ-Validator: 0b08069595da2c4b20e964b743bfc0a7334d5347
+  KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: c6a6963987e914c29d0dd58468393edfcd53306f
+PODFILE CHECKSUM: ff90be5c99b27f55a1183ee04d9b4f270900a202
 
 COCOAPODS: 1.11.2

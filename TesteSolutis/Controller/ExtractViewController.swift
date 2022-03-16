@@ -16,13 +16,14 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     var service = Service()
     var user: LoginModel?
     
+    var username: String?
+    
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var cpfLbl: UILabel!
     @IBOutlet weak var saldoLbl: UILabel!
     
     @IBOutlet weak var bgGradient: UIView!
     @IBOutlet weak var extractView: UITableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,27 +40,18 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         
     }
     
-    // MARK: - Device Orientation
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-    
-    override var shouldAutorotate: Bool {
-        return false
-    }
-    
     func setGradient() {
         let view = self.bgGradient
         let gradient = CAGradientLayer()
         let startColor: UIColor = #colorLiteral(red: 0.6941176471, green: 0.7803921569, blue: 0.8941176471, alpha: 1)
         let endColor: UIColor = #colorLiteral(red: 0.1958471239, green: 0.4886431694, blue: 0.7751893401, alpha: 1)
-        gradient.frame = self.bgGradient!.bounds
         gradient.frame = view!.bounds
         gradient.colors = [startColor.cgColor, endColor.cgColor]
         gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         view!.layer.insertSublayer(gradient, at: 0)
     }
+    
 }
 
 // MARK: - Population User Data
@@ -108,6 +100,7 @@ extension ExtractViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goBack" {
             let login = segue.destination as! LoginViewController
+            login.username = self.username
             self.dismiss(animated: true, completion: nil)
         }
     }
