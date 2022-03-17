@@ -17,6 +17,7 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     var user: LoginModel?
     
     var username: String?
+    var viewSaldo = false
     
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var cpfLbl: UILabel!
@@ -24,6 +25,7 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     
     @IBOutlet weak var bgGradient: UIView!
     @IBOutlet weak var extractView: UITableView!
+    @IBOutlet weak var viewSaldoButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,15 +54,34 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         view!.layer.insertSublayer(gradient, at: 0)
     }
     
+    
+    @IBAction func viewSaldoPressed(_ sender: UIButton) {
+        if viewSaldo == true {
+            self.viewSaldo = false
+            self.viewSaldoButton.setImage(UIImage(systemName: "eye.slash"), for: UIControl.State.normal)
+            getData()
+        } else {
+            self.viewSaldo = true
+            self.viewSaldoButton.setImage(UIImage(systemName: "eye"), for: UIControl.State.normal)
+            getData()
+            }
+        }
+        
+    
 }
 
 // MARK: - Population User Data
 extension ExtractViewController {
     func getData(){
+    
         if let safeUser = user {
             self.nameLbl.text = safeUser.nome
             self.cpfLbl.text = "\(extractFormat.formatCpf(cpf: safeUser.cpf))"
-            self.saldoLbl.text = "R$\(extractFormat.formatValue(value: safeUser.saldo))"
+            if viewSaldo == true {
+            self.saldoLbl.text = "R$ \(extractFormat.formatValue(value: safeUser.saldo))"
+            } else {
+                self.saldoLbl.text = "R$ ••••"
+            }
         }
     }
 }

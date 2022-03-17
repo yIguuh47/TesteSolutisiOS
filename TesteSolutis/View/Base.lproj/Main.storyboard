@@ -221,7 +221,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="R$1,869,32" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Er4-nz-iYE" userLabel="SaldoField">
-                                        <rect key="frame" x="15" y="195.66666666666666" width="398" height="26.333333333333343"/>
+                                        <rect key="frame" x="15" y="192.66666666666666" width="398" height="26.333333333333343"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -241,8 +241,21 @@
                                             <action selector="exitButtom:" destination="rKy-es-bVo" eventType="touchUpInside" id="lr1-7d-1jp"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ts-dN-mhh" userLabel="viewSaldoButton">
+                                        <rect key="frame" x="15" y="168" width="26" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="26" id="kj3-oo-2kZ"/>
+                                            <constraint firstAttribute="height" constant="16" id="n0v-o9-KRu"/>
+                                        </constraints>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="eye.slash" catalog="system"/>
+                                        <connections>
+                                            <action selector="viewSaldoPressed:" destination="rKy-es-bVo" eventType="touchUpInside" id="o78-YG-W76"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saldo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2jZ-YD-pxK">
-                                        <rect key="frame" x="15.000000000000004" y="169" width="45.333333333333343" height="21.666666666666657"/>
+                                        <rect key="frame" x="51" y="166" width="45.333333333333343" height="21.666666666666657"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -252,18 +265,20 @@
                                 <constraints>
                                     <constraint firstItem="Kiq-8f-Lnq" firstAttribute="top" secondItem="Pcw-h0-YLD" secondAttribute="top" constant="46" id="2Ts-sy-as5"/>
                                     <constraint firstAttribute="trailing" secondItem="Er4-nz-iYE" secondAttribute="trailing" constant="15" id="C4G-JA-lXl"/>
+                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="top" secondItem="vTh-Aa-RtI" secondAttribute="bottom" constant="17" id="EAY-US-cnV"/>
                                     <constraint firstAttribute="trailing" secondItem="u6c-iM-gjs" secondAttribute="trailingMargin" constant="15" id="EGs-Fy-DJD"/>
+                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="leading" secondItem="3ts-dN-mhh" secondAttribute="trailing" constant="10" id="JlC-4t-os4"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="leading" secondItem="Kiq-8f-Lnq" secondAttribute="trailing" constant="15" id="KOb-uW-XNT"/>
                                     <constraint firstItem="u6c-iM-gjs" firstAttribute="top" secondItem="Kiq-8f-Lnq" secondAttribute="bottom" constant="20" id="McL-0s-JPy"/>
+                                    <constraint firstItem="3ts-dN-mhh" firstAttribute="top" secondItem="vTh-Aa-RtI" secondAttribute="bottom" constant="19" id="OAn-Qj-duI"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="bottom" secondItem="Kiq-8f-Lnq" secondAttribute="bottom" id="Qgx-h0-ubJ"/>
+                                    <constraint firstItem="3ts-dN-mhh" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="S5n-lH-yg1"/>
                                     <constraint firstItem="Er4-nz-iYE" firstAttribute="top" secondItem="2jZ-YD-pxK" secondAttribute="bottom" constant="5" id="T8T-D1-2Ke"/>
                                     <constraint firstItem="vTh-Aa-RtI" firstAttribute="top" secondItem="u6c-iM-gjs" secondAttribute="bottom" constant="5" id="a6F-Hj-upx"/>
                                     <constraint firstAttribute="trailing" secondItem="vTh-Aa-RtI" secondAttribute="trailing" constant="15" id="anH-ou-K3T"/>
-                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="cMl-8b-Vqr"/>
                                     <constraint firstItem="u6c-iM-gjs" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="cuk-Ie-HRA"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="top" secondItem="Kiq-8f-Lnq" secondAttribute="top" id="dVo-ul-sDc"/>
                                     <constraint firstItem="vTh-Aa-RtI" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="f3a-WK-nyy"/>
-                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="top" secondItem="vTh-Aa-RtI" secondAttribute="bottom" constant="20" id="mAo-ZW-4s9"/>
                                     <constraint firstAttribute="trailing" secondItem="A7U-x7-vwQ" secondAttribute="trailing" constant="15" id="rye-5C-ztm"/>
                                     <constraint firstAttribute="height" constant="230" id="rzd-Eh-1kT"/>
                                     <constraint firstItem="Kiq-8f-Lnq" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="xdP-Cn-LoD"/>
@@ -363,6 +378,7 @@
                         <outlet property="extractView" destination="42a-tc-AyX" id="HcF-ku-Soc"/>
                         <outlet property="nameLbl" destination="Kiq-8f-Lnq" id="rrm-S5-XJL"/>
                         <outlet property="saldoLbl" destination="Er4-nz-iYE" id="njw-QI-1qz"/>
+                        <outlet property="viewSaldoButton" destination="3ts-dN-mhh" id="33k-d5-Qio"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="goBack" id="pbJ-R0-VqU"/>
                     </connections>
                 </viewController>
@@ -375,6 +391,7 @@
         <segue reference="pbJ-R0-VqU"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="eye.slash" catalog="system" width="128" height="86"/>
         <image name="logo_solutis" width="401" height="91"/>
         <image name="rectangle.portrait.and.arrow.right" catalog="system" width="128" height="108"/>
         <namedColor name="AccentColor">

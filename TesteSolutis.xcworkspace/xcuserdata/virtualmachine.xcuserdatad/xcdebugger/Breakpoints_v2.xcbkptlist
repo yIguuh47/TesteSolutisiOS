@@ -87,32 +87,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D36FFEF8-882E-4841-AC26-B8B30DC93321"
+            uuid = "994171D3-D9CC-467C-91F7-7726232DF7CF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TesteSolutis/Model/Service/Service.swift"
+            filePath = "TesteSolutis/Controller/ExtractViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "requestLogin(username:password:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CABA40C2-1100-4F2C-8A4E-D7132C8F195C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TesteSolutis/Model/Service/Service.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "requestLogin(username:password:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "viewSaldoPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
