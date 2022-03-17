@@ -241,19 +241,8 @@
                                             <action selector="exitButtom:" destination="rKy-es-bVo" eventType="touchUpInside" id="lr1-7d-1jp"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02k-dt-02F" userLabel="viewSaldoButton">
-                                        <rect key="frame" x="16" y="173" width="24" height="14"/>
-                                        <color key="tintColor" systemColor="labelColor"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain">
-                                            <backgroundConfiguration key="background" image="eye" catalog="system"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="viewSaldoButton:" destination="rKy-es-bVo" eventType="touchUpInside" id="99e-ct-cFY"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saldo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2jZ-YD-pxK">
-                                        <rect key="frame" x="48" y="169" width="45.333333333333343" height="21.666666666666657"/>
+                                        <rect key="frame" x="15.000000000000004" y="169" width="45.333333333333343" height="21.666666666666657"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -266,19 +255,17 @@
                                     <constraint firstAttribute="trailing" secondItem="u6c-iM-gjs" secondAttribute="trailingMargin" constant="15" id="EGs-Fy-DJD"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="leading" secondItem="Kiq-8f-Lnq" secondAttribute="trailing" constant="15" id="KOb-uW-XNT"/>
                                     <constraint firstItem="u6c-iM-gjs" firstAttribute="top" secondItem="Kiq-8f-Lnq" secondAttribute="bottom" constant="20" id="McL-0s-JPy"/>
-                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="leading" secondItem="02k-dt-02F" secondAttribute="trailing" constant="8" id="NcJ-v4-Da4"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="bottom" secondItem="Kiq-8f-Lnq" secondAttribute="bottom" id="Qgx-h0-ubJ"/>
-                                    <constraint firstItem="02k-dt-02F" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="16" id="Qw7-rv-6BZ"/>
                                     <constraint firstItem="Er4-nz-iYE" firstAttribute="top" secondItem="2jZ-YD-pxK" secondAttribute="bottom" constant="5" id="T8T-D1-2Ke"/>
                                     <constraint firstItem="vTh-Aa-RtI" firstAttribute="top" secondItem="u6c-iM-gjs" secondAttribute="bottom" constant="5" id="a6F-Hj-upx"/>
                                     <constraint firstAttribute="trailing" secondItem="vTh-Aa-RtI" secondAttribute="trailing" constant="15" id="anH-ou-K3T"/>
+                                    <constraint firstItem="2jZ-YD-pxK" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="cMl-8b-Vqr"/>
                                     <constraint firstItem="u6c-iM-gjs" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="cuk-Ie-HRA"/>
                                     <constraint firstItem="A7U-x7-vwQ" firstAttribute="top" secondItem="Kiq-8f-Lnq" secondAttribute="top" id="dVo-ul-sDc"/>
                                     <constraint firstItem="vTh-Aa-RtI" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="f3a-WK-nyy"/>
                                     <constraint firstItem="2jZ-YD-pxK" firstAttribute="top" secondItem="vTh-Aa-RtI" secondAttribute="bottom" constant="20" id="mAo-ZW-4s9"/>
                                     <constraint firstAttribute="trailing" secondItem="A7U-x7-vwQ" secondAttribute="trailing" constant="15" id="rye-5C-ztm"/>
                                     <constraint firstAttribute="height" constant="230" id="rzd-Eh-1kT"/>
-                                    <constraint firstItem="02k-dt-02F" firstAttribute="top" secondItem="vTh-Aa-RtI" secondAttribute="bottom" constant="24" id="xRG-WU-AJv"/>
                                     <constraint firstItem="Kiq-8f-Lnq" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="xdP-Cn-LoD"/>
                                     <constraint firstItem="Er4-nz-iYE" firstAttribute="leading" secondItem="Pcw-h0-YLD" secondAttribute="leading" constant="15" id="y8v-ce-gY7"/>
                                 </constraints>
@@ -376,7 +363,6 @@
                         <outlet property="extractView" destination="42a-tc-AyX" id="HcF-ku-Soc"/>
                         <outlet property="nameLbl" destination="Kiq-8f-Lnq" id="rrm-S5-XJL"/>
                         <outlet property="saldoLbl" destination="Er4-nz-iYE" id="njw-QI-1qz"/>
-                        <outlet property="viewSaldo" destination="02k-dt-02F" id="3R4-6Y-rzI"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="goBack" id="pbJ-R0-VqU"/>
                     </connections>
                 </viewController>
@@ -389,7 +375,6 @@
         <segue reference="pbJ-R0-VqU"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="eye" catalog="system" width="128" height="81"/>
         <image name="logo_solutis" width="401" height="91"/>
         <image name="rectangle.portrait.and.arrow.right" catalog="system" width="128" height="108"/>
         <namedColor name="AccentColor">
