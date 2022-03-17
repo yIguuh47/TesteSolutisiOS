@@ -39,6 +39,7 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         setGradient()
         getData()
         requestExtrac()
+        refreshExtract()
         
     }
     
@@ -66,7 +67,6 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
             getData()
             }
         }
-        
     
 }
 
@@ -112,6 +112,22 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
         self.extractList = extractList
         self.extractView.reloadData()
         SVProgressHUD.dismiss()
+    }
+    
+}
+
+// MARK: - Refresh TableView
+extension ExtractViewController {
+    func refreshExtract() {
+        extractView.refreshControl = UIRefreshControl()
+        extractView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+    }
+
+    @objc private func didPullToRefresh() {
+        DispatchQueue.main.async {
+            self.extractView.refreshControl?.endRefreshing()
+            self.extractView.reloadData()
+        }
     }
     
 }
