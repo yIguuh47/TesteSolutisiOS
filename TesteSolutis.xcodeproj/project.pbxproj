@@ -20,6 +20,7 @@
 		BA34344627BC156A00E10F6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA34344427BC156A00E10F6C /* LaunchScreen.storyboard */; };
 		BA7F7C3927DA1C2D00B54FB0 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F7C3827DA1C2D00B54FB0 /* Validation.swift */; };
 		BA7F7C3C27DA1E3E00B54FB0 /* Formattation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F7C3B27DA1E3E00B54FB0 /* Formattation.swift */; };
+		BA88A2AF27E8AEC100A858FC /* PopUpExtractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA88A2AE27E8AEC100A858FC /* PopUpExtractViewController.swift */; };
 		BAE401A027D0D5BA004FC255 /* ExtractModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE4019F27D0D5BA004FC255 /* ExtractModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		BA34344727BC156A00E10F6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA7F7C3827DA1C2D00B54FB0 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		BA7F7C3B27DA1E3E00B54FB0 /* Formattation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formattation.swift; sourceTree = "<group>"; };
+		BA88A2AE27E8AEC100A858FC /* PopUpExtractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpExtractViewController.swift; sourceTree = "<group>"; };
 		BAE4019F27D0D5BA004FC255 /* ExtractModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractModel.swift; sourceTree = "<group>"; };
 		D4FB7F6B1A68F751C8E1F172 /* Pods-TesteSolutis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteSolutis.debug.xcconfig"; path = "Target Support Files/Pods-TesteSolutis/Pods-TesteSolutis.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +133,7 @@
 			children = (
 				BA34343D27BC156500E10F6C /* LoginViewController.swift */,
 				BA055B0927C50DB700962B5F /* ExtractViewController.swift */,
+				BA88A2AE27E8AEC100A858FC /* PopUpExtractViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				BA055B0A27C50DB700962B5F /* ExtractViewController.swift in Sources */,
 				BAE401A027D0D5BA004FC255 /* ExtractModel.swift in Sources */,
 				BA34343E27BC156500E10F6C /* LoginViewController.swift in Sources */,
+				BA88A2AF27E8AEC100A858FC /* PopUpExtractViewController.swift in Sources */,
 				BA7F7C3C27DA1E3E00B54FB0 /* Formattation.swift in Sources */,
 				BA055B1727C8F20700962B5F /* LoginModel.swift in Sources */,
 				BA7F7C3927DA1C2D00B54FB0 /* Validation.swift in Sources */,

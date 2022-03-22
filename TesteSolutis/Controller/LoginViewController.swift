@@ -30,8 +30,10 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         service.delegateLog = self
         userTextField.delegate = self
         passwordTextField.delegate = self
+        rememberSwitch
         
         updateLogin()
+        
         
     }
     
@@ -66,6 +68,8 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         DispatchQueue.main.async {
             self.loginButtom.isUserInteractionEnabled = true
             self.user = user
+            let keychain = KeychainSwift()
+            keychain.set(self.userTextField!.text!, forKey: "username")
             self.performSegue(withIdentifier: "goToAccount", sender: self)
         }
     }
@@ -84,6 +88,9 @@ extension LoginViewController {
         if rememberSwitch.isOn {
             username = keyChain.get("username")
             userTextField.text = username
+        } else {
+            rememberSwitch.isOn = false
+            keyChain.delete("username")
         }
     }
     
@@ -94,6 +101,7 @@ extension LoginViewController {
             keyChain.set(true, forKey: "rememberSwitch")
         } else {
             keyChain.set(false, forKey: "rememberSwitch")
+            keyChain.delete("username")
         }
     }
 }

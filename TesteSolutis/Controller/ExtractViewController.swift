@@ -22,10 +22,18 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var cpfLbl: UILabel!
     @IBOutlet weak var saldoLbl: UILabel!
-    
     @IBOutlet weak var bgGradient: UIView!
-    @IBOutlet weak var extractView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var viewSaldoButton: UIButton!
+    
+    
+    @IBOutlet var blurView: UIVisualEffectView!
+    @IBOutlet var popupView: UIView!
+    @IBOutlet weak var popupStatusLbl: UILabel!
+    @IBOutlet weak var popupValueLbl: UILabel!
+    @IBOutlet weak var popupDescLbl: UILabel!
+    @IBOutlet weak var popupDataLbl: UILabel!
+    @IBOutlet weak var popupDoneButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +41,18 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         
         service.delegateExt = self
         
-        extractView.delegate = self
-        extractView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        
+        popupDoneButton.layer.cornerRadius = 22
         
         setGradient()
         getData()
         requestExtrac()
         refreshExtract()
-        
+        getPopup()
+
     }
     
     func setGradient() {
@@ -55,6 +67,42 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         view!.layer.insertSublayer(gradient, at: 0)
     }
     
+ 
+    @IBAction func ExitTapOnPopup(_ sender: Any) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
+    }
+    
+    @IBAction func exitPopupButton(_ sender: UIButton) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
+    }
+    
+    func getPopup() {
+        blurView.bounds = self.view.bounds
+    }
+    
+    func animateIn(desiredView: UIView) {
+        let backgroundView = self.view!
+        
+        backgroundView.addSubview(desiredView)
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        desiredView.alpha = 0
+        desiredView.center = backgroundView.center
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+        })
+    }
+    
+    func animateOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            desiredView.alpha = 0
+        })
+    }
     
     @IBAction func viewSaldoPressed(_ sender: UIButton) {
         if viewSaldo == true {
@@ -101,16 +149,26 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = extractView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
         
         cell.start(extractModel: extractList[indexPath.row])
 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) as? CustomCell else { return }
+        
+        animateIn(desiredView: blurView)
+        animateIn(desiredView: popupView)
+        
+        CustomPopUp(extract: extractList[indexPath.row])
+    }
+    
     func didExtract(extractList: [ExtractModel]) {
         self.extractList = extractList
-        self.extractView.reloadData()
+        self.tableView.reloadData()
         SVProgressHUD.dismiss()
     }
     
@@ -119,14 +177,14 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Refresh TableView
 extension ExtractViewController {
     func refreshExtract() {
-        extractView.refreshControl = UIRefreshControl()
-        extractView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
     }
 
     @objc private func didPullToRefresh() {
         DispatchQueue.main.async {
-            self.extractView.refreshControl?.endRefreshing()
-            self.extractView.reloadData()
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
         }
     }
     
@@ -147,4 +205,19 @@ extension ExtractViewController {
             self.performSegue(withIdentifier: "goBack", sender: self)
         }
     }
+}
+
+extension ExtractViewController {
+    
+    func CustomPopUp(extract: ExtractModel!) {
+        if extract.valor <= 0.0 {
+            self.popupStatusLbl.text = "Pagamento"
+        } else {
+            self.popupStatusLbl.text = "Recebimento"
+        }
+        self.popupDescLbl.text = extract.descricao
+        self.popupDataLbl.text = extractFormat.formatDate(date: extract.data)
+        self.popupValueLbl.text = "R$\(extractFormat.formatValue(value: extract.valor))"
+    }
+    
 }
