@@ -38,6 +38,7 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        popupDoneButton.layer.cornerRadius = 18
         
         service.delegateExt = self
         
@@ -45,16 +46,15 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         tableView.dataSource = self
         tableView.separatorStyle = .none
         
-        popupDoneButton.layer.cornerRadius = 22
-        
         setGradient()
         getData()
         requestExtrac()
         refreshExtract()
         getPopup()
-
+        
     }
     
+    // MARK: - Gradient
     func setGradient() {
         let view = self.bgGradient
         let gradient = CAGradientLayer()
@@ -67,42 +67,10 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
         view!.layer.insertSublayer(gradient, at: 0)
     }
     
- 
-    @IBAction func ExitTapOnPopup(_ sender: Any) {
-        animateOut(desiredView: blurView)
-        animateOut(desiredView: popupView)
-    }
-    
-    @IBAction func exitPopupButton(_ sender: UIButton) {
-        animateOut(desiredView: blurView)
-        animateOut(desiredView: popupView)
-    }
-    
-    func getPopup() {
-        blurView.bounds = self.view.bounds
-    }
-    
-    func animateIn(desiredView: UIView) {
-        let backgroundView = self.view!
-        
-        backgroundView.addSubview(desiredView)
-        
-        desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        desiredView.alpha = 0
-        desiredView.center = backgroundView.center
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            desiredView.alpha = 1
-        })
-    }
-    
-    func animateOut(desiredView: UIView) {
-        UIView.animate(withDuration: 0.3, animations: {
-            desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            desiredView.alpha = 0
-        })
-    }
+}
+
+// MARK: - Balance view
+extension ExtractViewController {
     
     @IBAction func viewSaldoPressed(_ sender: UIButton) {
         if viewSaldo == true {
@@ -113,20 +81,21 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
             self.viewSaldo = true
             self.viewSaldoButton.setImage(UIImage(systemName: "eye"), for: UIControl.State.normal)
             getData()
-            }
         }
+    }
     
 }
+
 
 // MARK: - Population User Data
 extension ExtractViewController {
     func getData(){
-    
+        
         if let safeUser = user {
             self.nameLbl.text = safeUser.nome
             self.cpfLbl.text = "\(extractFormat.formatCpf(cpf: safeUser.cpf))"
             if viewSaldo == true {
-            self.saldoLbl.text = "R$ \(extractFormat.formatValue(value: safeUser.saldo))"
+                self.saldoLbl.text = "R$ \(extractFormat.formatValue(value: safeUser.saldo))"
             } else {
                 self.saldoLbl.text = "R$ ••••"
             }
@@ -152,7 +121,7 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
         
         cell.start(extractModel: extractList[indexPath.row])
-
+        
         return cell
     }
     
@@ -180,7 +149,7 @@ extension ExtractViewController {
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
     }
-
+    
     @objc private func didPullToRefresh() {
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
@@ -190,8 +159,61 @@ extension ExtractViewController {
     
 }
 
+// MARK: - Maneger PopUp
+extension ExtractViewController {
+    
+    func getPopup() {
+        blurView.bounds = self.view.bounds
+    }
+    
+    func animateIn(desiredView: UIView) {
+        let backgroundView = self.view!
+        
+        backgroundView.addSubview(desiredView)
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        desiredView.alpha = 0
+        desiredView.center = backgroundView.center
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+        })
+    }
+    
+    func animateOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            desiredView.alpha = 0
+        })
+    }
+    
+    func CustomPopUp(extract: ExtractModel!) {
+        if extract.valor <= 0.0 {
+            self.popupStatusLbl.text = "Pagamento"
+        } else {
+            self.popupStatusLbl.text = "Recebimento"
+        }
+        self.popupDescLbl.text = extract.descricao
+        self.popupDataLbl.text = extractFormat.formatDate(date: extract.data)
+        self.popupValueLbl.text = "R$\(extractFormat.formatValue(value: extract.valor))"
+    }
+    
+    @IBAction func exitPopupButton(_ sender: UIButton) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
+    }
+    
+    @IBAction func ExitTapOnPopup(_ sender: Any) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
+    }
+    
+}
+
 // MARK: - Navigation
 extension ExtractViewController {
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goBack" {
             let login = segue.destination as! LoginViewController
@@ -207,17 +229,3 @@ extension ExtractViewController {
     }
 }
 
-extension ExtractViewController {
-    
-    func CustomPopUp(extract: ExtractModel!) {
-        if extract.valor <= 0.0 {
-            self.popupStatusLbl.text = "Pagamento"
-        } else {
-            self.popupStatusLbl.text = "Recebimento"
-        }
-        self.popupDescLbl.text = extract.descricao
-        self.popupDataLbl.text = extractFormat.formatDate(date: extract.data)
-        self.popupValueLbl.text = "R$\(extractFormat.formatValue(value: extract.valor))"
-    }
-    
-}
