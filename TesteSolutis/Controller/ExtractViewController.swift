@@ -26,7 +26,6 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var viewSaldoButton: UIButton!
     
-    
     @IBOutlet var blurView: UIVisualEffectView!
     @IBOutlet var popupView: UIView!
     @IBOutlet weak var popupStatusLbl: UILabel!

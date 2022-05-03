@@ -15,8 +15,7 @@ struct ValidationModel {
     let password: String
     
     func validPassword (_ password: String) -> Bool {
-        let passRegEx = "^(.*[a-z]*.)(.*[0-9]*.)(.*[!@#$%^&*]*.)$"
-
+        let passRegEx = "(.*[a-z])(.*[0-9])(.*[!@#$%^&*]{1,32})"
         
         let passPred = NSPredicate(format:"SELF MATCHES %@", passRegEx)
             return passPred.evaluate(with: password)
