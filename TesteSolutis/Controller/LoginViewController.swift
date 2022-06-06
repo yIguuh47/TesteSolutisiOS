@@ -16,6 +16,7 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var validationLabel: UILabel!
     @IBOutlet weak var rememberSwitch: UISwitch!
+    @IBOutlet weak var solutisImage: UIImageView!
     
     var service = Service()
     var user: LoginModel?
@@ -32,40 +33,31 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         passwordTextField.delegate = self
         
         updateLogin()
+        tapGestureRecognizer()
         
     }
     
-    func dismissKeyboardOnTap() {
-        self.view.addGestureRecognizer(self.endEditingRecognizer())
-        self.navigationController?.navigationBar.addGestureRecognizer(self.endEditingRecognizer())
+    // MARK: - Action Logo
+    func tapGestureRecognizer(){
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        solutisImage.isUserInteractionEnabled = true
+        solutisImage.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    private func endEditingRecognizer() -> UIGestureRecognizer {
-        let tap = UITapGestureRecognizer(target: self.view, action: #selector(self.view.endEditing(_:)))
-        tap.cancelsTouchesInView = false
-        return tap
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        guard let url = URL(string: "https://solutis.com.br/") else { return }
+                UIApplication.shared.open(url)
     }
-        
-    @IBAction func switchRemembe(_ sender: UISwitch) {
-        remember(sender)
-    }
-    
-    @IBAction func loginPressed(_ sender: UIButton) {
-        self.loginButtom.isUserInteractionEnabled = false
-        
-        guard let user = userTextField.text else {return}
-        guard let password = passwordTextField.text else {return}
-        
-        SVProgressHUD.show()
-        validInputs(user, password)
-    }
-    
     
     // MARK: - Delegation
     func didLogin(user: LoginModel) {
         DispatchQueue.main.async {
             self.loginButtom.isUserInteractionEnabled = true
             self.user = user
+            let keychain = KeychainSwift()
+            keychain.set(self.userTextField!.text!, forKey: "username")
             self.performSegue(withIdentifier: "goToAccount", sender: self)
         }
     }
@@ -74,28 +66,6 @@ class LoginViewController: UIViewController, LoginManagerDelegate {
         self.errorLog()
     }
     
-}
-
-extension LoginViewController {
-    func updateLogin(){
-        let keyChain = KeychainSwift()
-        rememberSwitch.isOn = keyChain.getBool("rememberSwitch") ?? false
-        
-        if rememberSwitch.isOn {
-            username = keyChain.get("username")
-            userTextField.text = username
-        }
-    }
-    
-    func remember(_ sender: UISwitch) {
-        let keyChain = KeychainSwift()
-
-        if sender.isOn {
-            keyChain.set(true, forKey: "rememberSwitch")
-        } else {
-            keyChain.set(false, forKey: "rememberSwitch")
-        }
-    }
 }
 
 // MARK: - TextFields
@@ -126,8 +96,50 @@ extension LoginViewController: UITextFieldDelegate {
             return true
         }
     }
+    
+    func dismissKeyboardOnTap() {
+        self.view.addGestureRecognizer(self.endEditingRecognizer())
+        self.navigationController?.navigationBar.addGestureRecognizer(self.endEditingRecognizer())
+    }
+    
+    private func endEditingRecognizer() -> UIGestureRecognizer {
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(self.view.endEditing(_:)))
+        tap.cancelsTouchesInView = false
+        return tap
+    }
 }
 
+// MARK: - Keychain
+extension LoginViewController {
+    
+    @IBAction func switchRemembe(_ sender: UISwitch) {
+        remember(sender)
+    }
+    
+    func updateLogin(){
+        let keyChain = KeychainSwift()
+        rememberSwitch.isOn = keyChain.getBool("rememberSwitch") ?? false
+        
+        if rememberSwitch.isOn {
+            username = keyChain.get("username")
+            userTextField.text = username
+        } else {
+            rememberSwitch.isOn = false
+            keyChain.delete("username")
+        }
+    }
+    
+    func remember(_ sender: UISwitch) {
+        let keyChain = KeychainSwift()
+
+        if sender.isOn {
+            keyChain.set(true, forKey: "rememberSwitch")
+        } else {
+            keyChain.set(false, forKey: "rememberSwitch")
+            keyChain.delete("username")
+        }
+    }
+}
 
 // MARK: - Validation
 extension LoginViewController {
@@ -158,6 +170,16 @@ extension LoginViewController {
 
 // MARK: - Navigation
 extension LoginViewController {
+    
+    @IBAction func loginPressed(_ sender: UIButton) {
+        self.loginButtom.isUserInteractionEnabled = false
+        
+        guard let user = userTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        SVProgressHUD.show()
+        validInputs(user, password)
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToAccount" {

@@ -10,7 +10,7 @@ import UIKit
 class CustomCell: UITableViewCell {
 
     @IBOutlet weak var extractView: UIView!
-    @IBOutlet weak var stateLbl: UILabel!
+    @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var descriptionLbl: UILabel!
     @IBOutlet weak var valueLbl: UILabel!
     @IBOutlet weak var dataLbl: UILabel!
@@ -45,14 +45,14 @@ class CustomCell: UITableViewCell {
     func start(extractModel: ExtractModel!) {
         let extractD = extractModel!
         if extractD.valor <= 0.0 {
-            self.stateLbl.text = "Pagamento"
+            self.statusLbl.text = "Pagamento"
             self.descriptionLbl.text = extractD.descricao
             self.dataLbl.text = extractFormat.formatDate(date: extractD.data)
             self.valueLbl.text = "R$\(extractFormat.formatValue(value: extractD.valor))"
             self.valueLbl.textColor = #colorLiteral(red: 0.9989479184, green: 0.258279562, blue: 0.2214803398, alpha: 1)
 
         } else {
-            self.stateLbl.text = "Recebimento"
+            self.statusLbl.text = "Recebimento"
             self.descriptionLbl.text = extractD.descricao
             self.dataLbl.text = "\(extractFormat.formatDate(date: extractD.data))"
             self.valueLbl.text = "R$\(extractFormat.formatValue(value: extractD.valor))"

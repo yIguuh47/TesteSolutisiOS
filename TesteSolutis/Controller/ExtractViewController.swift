@@ -17,29 +17,43 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     var user: LoginModel?
     
     var username: String?
+    var viewSaldo = false
     
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var cpfLbl: UILabel!
     @IBOutlet weak var saldoLbl: UILabel!
-    
     @IBOutlet weak var bgGradient: UIView!
-    @IBOutlet weak var extractView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var viewSaldoButton: UIButton!
+    
+    @IBOutlet var blurView: UIVisualEffectView!
+    @IBOutlet var popupView: UIView!
+    @IBOutlet weak var popupStatusLbl: UILabel!
+    @IBOutlet weak var popupValueLbl: UILabel!
+    @IBOutlet weak var popupDescLbl: UILabel!
+    @IBOutlet weak var popupDataLbl: UILabel!
+    @IBOutlet weak var popupDoneButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        popupDoneButton.layer.cornerRadius = 18
         
         service.delegateExt = self
         
-        extractView.delegate = self
-        extractView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
         
         setGradient()
         getData()
         requestExtrac()
+        refreshExtract()
+        getPopup()
         
     }
     
+    // MARK: - Gradient
     func setGradient() {
         let view = self.bgGradient
         let gradient = CAGradientLayer()
@@ -54,13 +68,36 @@ class ExtractViewController: UIViewController, ExtractManegerDelegate{
     
 }
 
+// MARK: - Balance view
+extension ExtractViewController {
+    
+    @IBAction func viewSaldoPressed(_ sender: UIButton) {
+        if viewSaldo == true {
+            self.viewSaldo = false
+            self.viewSaldoButton.setImage(UIImage(systemName: "eye.slash"), for: UIControl.State.normal)
+            getData()
+        } else {
+            self.viewSaldo = true
+            self.viewSaldoButton.setImage(UIImage(systemName: "eye"), for: UIControl.State.normal)
+            getData()
+        }
+    }
+    
+}
+
+
 // MARK: - Population User Data
 extension ExtractViewController {
     func getData(){
+        
         if let safeUser = user {
             self.nameLbl.text = safeUser.nome
             self.cpfLbl.text = "\(extractFormat.formatCpf(cpf: safeUser.cpf))"
-            self.saldoLbl.text = "R$\(extractFormat.formatValue(value: safeUser.saldo))"
+            if viewSaldo == true {
+                self.saldoLbl.text = "R$ \(extractFormat.formatValue(value: safeUser.saldo))"
+            } else {
+                self.saldoLbl.text = "R$ ••••"
+            }
         }
     }
 }
@@ -80,23 +117,102 @@ extension ExtractViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = extractView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
         
         cell.start(extractModel: extractList[indexPath.row])
-
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) as? CustomCell else { return }
+        
+        animateIn(desiredView: blurView)
+        animateIn(desiredView: popupView)
+        
+        CustomPopUp(extract: extractList[indexPath.row])
     }
     
     func didExtract(extractList: [ExtractModel]) {
         self.extractList = extractList
-        self.extractView.reloadData()
+        self.tableView.reloadData()
         SVProgressHUD.dismiss()
+    }
+    
+}
+
+// MARK: - Refresh TableView
+extension ExtractViewController {
+    func refreshExtract() {
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+    }
+    
+    @objc private func didPullToRefresh() {
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
+    }
+    
+}
+
+// MARK: - Maneger PopUp
+extension ExtractViewController {
+    
+    func getPopup() {
+        blurView.bounds = self.view.bounds
+    }
+    
+    func animateIn(desiredView: UIView) {
+        let backgroundView = self.view!
+        
+        backgroundView.addSubview(desiredView)
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        desiredView.alpha = 0
+        desiredView.center = backgroundView.center
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+        })
+    }
+    
+    func animateOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            desiredView.alpha = 0
+        })
+    }
+    
+    func CustomPopUp(extract: ExtractModel!) {
+        if extract.valor <= 0.0 {
+            self.popupStatusLbl.text = "Pagamento"
+        } else {
+            self.popupStatusLbl.text = "Recebimento"
+        }
+        self.popupDescLbl.text = extract.descricao
+        self.popupDataLbl.text = extractFormat.formatDate(date: extract.data)
+        self.popupValueLbl.text = "R$\(extractFormat.formatValue(value: extract.valor))"
+    }
+    
+    @IBAction func exitPopupButton(_ sender: UIButton) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
+    }
+    
+    @IBAction func ExitTapOnPopup(_ sender: Any) {
+        animateOut(desiredView: blurView)
+        animateOut(desiredView: popupView)
     }
     
 }
 
 // MARK: - Navigation
 extension ExtractViewController {
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goBack" {
             let login = segue.destination as! LoginViewController
@@ -111,3 +227,4 @@ extension ExtractViewController {
         }
     }
 }
+
